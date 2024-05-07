@@ -1,5 +1,3 @@
-from store.permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from store.pagination import DefaultPagination
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
@@ -11,6 +9,8 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
 from .filters import ProductFilter
 from .models import Cart, CartItem, Collection, Customer, Order, OrderItem, Product, ProductImage, Review
+from .pagination import DefaultPagination
+from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
 from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer, CustomerSerializer, OrderSerializer, ProductImageSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
 
 
