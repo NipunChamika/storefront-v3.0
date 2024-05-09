@@ -18,6 +18,14 @@ def update_collection(api_client):
     return do_update_collection
 
 
+@pytest.fixture
+def delete_collection(api_client):
+    def do_delete_collection():
+        collection = baker.make(Collection)
+        return api_client.delete(f'/store/collections/{collection.id}/')
+    return do_delete_collection
+
+
 @pytest.mark.django_db
 class TestCreateCollection:
     def test_if_user_is_anonymous_returns_401(self, create_collection):
@@ -110,7 +118,7 @@ class TestUpdateCollection:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['title'] is not None
 
-    def test_if_data_is_valid_returns_400(self, update_collection, authenticate):
+    def test_if_data_is_valid_returns_200(self, update_collection, authenticate):
         authenticate(is_staff=True)
         collection = baker.make(Collection)
 
@@ -122,3 +130,23 @@ class TestUpdateCollection:
             'title': 'a',
             'products_count': 0
         }
+
+
+@pytest.mark.django_db
+class TestDeleteCollection:
+    def test_if_user_is_anonymous_returns_401(self, delete_collection):
+        response = delete_collection()
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_if_user_is_not_admin_returns_403(self, delete_collection, authenticate):
+        authenticate()
+        response = delete_collection()
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_if_collection_deletes_returns_204(self, delete_collection, authenticate):
+        authenticate(is_staff=True)
+        response = delete_collection()
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
