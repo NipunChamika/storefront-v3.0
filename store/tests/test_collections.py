@@ -1,5 +1,4 @@
 from rest_framework import status
-from rest_framework.test import APIClient
 import pytest
 from model_bakery import baker
 from store.models import Collection
@@ -10,6 +9,13 @@ def create_collection(api_client):
     def do_create_collection(collection):
         return api_client.post('/store/collections/', collection)
     return do_create_collection
+
+
+@pytest.fixture
+def update_collection(api_client):
+    def do_update_collection(title, collection):
+        return api_client.put(f'/store/collections/{collection.id}/', title)
+    return do_update_collection
 
 
 @pytest.mark.django_db
@@ -74,5 +80,45 @@ class TestRetrieveCollection:
         assert response.data == {
             'id': collection.id,
             'title': collection.title,
+            'products_count': 0
+        }
+
+
+@pytest.mark.django_db
+class TestUpdateCollection:
+    def test_if_user_is_anonymous_returns_401(self, update_collection):
+        collection = baker.make(Collection)
+
+        response = update_collection({'title': 'a'}, collection)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_if_user_is_not_admin_returns_403(self, update_collection, authenticate):
+        authenticate()
+        collection = baker.make(Collection)
+
+        response = update_collection({'title': 'a'}, collection)
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_if_data_is_invalid_returns_400(self, update_collection, authenticate):
+        authenticate(is_staff=True)
+        collection = baker.make(Collection)
+
+        response = update_collection({'title': ''}, collection)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.data['title'] is not None
+
+    def test_if_data_is_valid_returns_400(self, update_collection, authenticate):
+        authenticate(is_staff=True)
+        collection = baker.make(Collection)
+
+        response = response = update_collection({'title': 'a'}, collection)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data == {
+            'id': collection.id,
+            'title': 'a',
             'products_count': 0
         }
