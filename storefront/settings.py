@@ -221,7 +221,8 @@ LOGGING = {
             'class': 'logging.StreamHandler'
         },
         'file': {
-            'class': 'FileHandler'
+            'class': 'logging.FileHandler',
+            'filename': 'general.log'
         }
     },
     'loggers': {
