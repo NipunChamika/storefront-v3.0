@@ -74,6 +74,7 @@ python manage.py runserver
 
 ## API Endpoints
 
+- `/admin/`
 - `/store/products/`
 - `/store/products/{id}/`
 - `/store/collections/`
