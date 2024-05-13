@@ -74,17 +74,17 @@ python manage.py runserver
 
 ## API Endpoints
 
-- `/products/`
-- `products/{id}/`
-- `/collections/`
-- `/collections/{id}/`
-- `/carts/`
-- `/carts/{id}/`
-- `/carts/{id}/items/`
-- `/carts/{id}/items/{id}`
-- `/customers/`
-- `/customers/{id}/`
-- `/orders/`
-- `/orders/{id}/`
+- `/store/products/`
+- `/store/products/{id}/`
+- `/store/collections/`
+- `/store/collections/{id}/`
+- `/store/carts/`
+- `/store/carts/{id}/`
+- `/store/carts/{id}/items/`
+- `/store/carts/{id}/items/{id}`
+- `/store/customers/`
+- `/store/customers/{id}/`
+- `/store/orders/`
+- `/store/orders/{id}/`
 - `/auth/jwt/create/`
 - `/auth/jwt/refresh/`
