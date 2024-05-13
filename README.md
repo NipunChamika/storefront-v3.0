@@ -71,3 +71,20 @@ python manage.py createsuperuser
 ```
 python manage.py runserver
 ```
+
+## API Endpoints
+
+- `/products/`
+- `products/{id}/`
+- `/collections/`
+- `/collections/{id}/`
+- `/carts/`
+- `/carts/{id}/`
+- `/carts/{id}/items/`
+- `/carts/{id}/items/{id}`
+- `/customers/`
+- `/customers/{id}/`
+- `/orders/`
+- `/orders/{id}/`
+- `/auth/jwt/create/`
+- `/auth/jwt/refresh/`
